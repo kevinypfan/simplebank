@@ -1,6 +1,5 @@
 CREATE TABLE "accounts" (
   "id" bigserial PRIMARY KEY,
-  "user_id" bigint NOT NULL,
   "owner" varchar NOT NULL,
   "balance" bigint NOT NULL,
   "currency" varchar NOT NULL,
@@ -22,32 +21,13 @@ CREATE TABLE "transfers" (
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
-CREATE TABLE "users" (
-    "id" bigserial PRIMARY KEY,
-    "username" text,
-    "legal_name" text,
-    "password" text,
-    "created_at" timestamptz NOT NULL DEFAULT (now()),
-    "phone" text,
-    "email" text
-);
-
-
 ALTER TABLE "entries" ADD FOREIGN KEY ("account_id") REFERENCES "accounts" ("id");
 
 ALTER TABLE "transfers" ADD FOREIGN KEY ("from_account_id") REFERENCES "accounts" ("id");
 
 ALTER TABLE "transfers" ADD FOREIGN KEY ("to_account_id") REFERENCES "accounts" ("id");
 
-ALTER TABLE "accounts" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-
-CREATE INDEX ON "users" ("username");
-
-CREATE INDEX ON "users" ("email");
-
 CREATE INDEX ON "accounts" ("owner");
-
-CREATE INDEX ON "accounts" ("user_id");
 
 CREATE INDEX ON "entries" ("account_id");
 
